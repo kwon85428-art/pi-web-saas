@@ -49,13 +49,12 @@ export default function ChatPage() {
   useEffect(() => {
     fetch('/api/auth/me').then(r => r.json()).then(d => {
       if (d.user) setUser(d.user);
-      else router.push('/login');
-    }).catch(() => router.push('/login'));
+    }).catch(() => {});
 
     fetch('/api/sessions').then(r => r.json()).then(d => {
       setSessions(d.sessions || []);
     }).catch(() => {});
-  }, [router]);
+  }, []);
 
   const handleSend = useCallback((text: string) => {
     if (!text.trim()) return;
