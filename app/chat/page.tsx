@@ -99,6 +99,14 @@ export default function ChatPage() {
               <span style={{ width: 24, height: 24, background: 'linear-gradient(135deg, #3b82f6, #06b6d4)', borderRadius: 6, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, fontWeight: 700, color: '#fff' }}>O</span>
               Oil Web
             </div>
+            <button
+              onClick={() => setSidebarOpen(false)}
+              style={{ background: 'none', border: 'none', color: '#666', cursor: 'pointer', padding: 4, borderRadius: 6 }}
+              onMouseEnter={e => { e.currentTarget.style.background = '#1e1e28'; }}
+              onMouseLeave={e => { e.currentTarget.style.background = 'none'; }}
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
           </div>
           <button
             onClick={handleNewChat}
@@ -169,22 +177,21 @@ export default function ChatPage() {
         )}
       </div>
 
-      {/* ============ SIDEBAR TOGGLE ============ */}
-      <button
-        onClick={() => setSidebarOpen(!sidebarOpen)}
-        style={{
-          position: 'fixed', bottom: 16, left: sidebarOpen ? 268 : 16, zIndex: 50,
-          width: 32, height: 32, borderRadius: 8,
-          background: '#1a1a24', border: '1px solid #2a2a32',
-          color: '#888', cursor: 'pointer',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          transition: 'all 0.2s ease',
-        }}
-      >
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          {sidebarOpen ? <polyline points="15 18 9 12 15 6"/> : <polyline points="9 18 15 12 9 6"/>}
-        </svg>
-      </button>
+      {/* Sidebar closed: show expand button inline at top-left */}
+      {!sidebarOpen && (
+        <button
+          onClick={() => setSidebarOpen(true)}
+          style={{
+            position: 'fixed', top: 16, left: 16, zIndex: 50,
+            width: 36, height: 36, borderRadius: 10,
+            background: '#1a1a24', border: '1px solid #2a2a34',
+            color: '#888', cursor: 'pointer',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+          }}
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+      )}
 
       {/* ============ MAIN CONTENT ============ */}
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '24px', overflow: 'auto' }}>
