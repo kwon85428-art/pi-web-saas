@@ -1,5 +1,6 @@
 import { SignJWT, jwtVerify } from 'jose';
 import { cookies } from 'next/headers';
+import crypto from 'crypto';
 import db from './db';
 
 const JWT_SECRET = new TextEncoder().encode(
@@ -18,6 +19,7 @@ export interface UserPayload {
 export async function createToken(payload: UserPayload): Promise<string> {
   return new SignJWT({ ...payload })
     .setProtectedHeader({ alg: 'HS256' })
+    .setJti(crypto.randomUUID())
     .setExpirationTime(JWT_EXPIRY)
     .setIssuedAt()
     .sign(JWT_SECRET);
