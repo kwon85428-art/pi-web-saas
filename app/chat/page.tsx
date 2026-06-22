@@ -24,18 +24,6 @@ const suggestionCards = [
     desc: '6 席位结构化辩论，中西学者锚点，交叉质询输出决策框架',
     prompt: '开一个圆桌：中国深部煤层气从找到到规模开发需要跨越哪些门槛？',
   },
-  {
-    icon: '📊',
-    title: '学者谱系蒸馏',
-    desc: '任意学者名单按方法论自动分类，生成谱系报告',
-    prompt: '帮我把这组学者做谱系蒸馏',
-  },
-  {
-    icon: '⚡',
-    title: '代码开发助手',
-    desc: '代码编写、文档处理、数据分析——你的全能 AI 搭档',
-    prompt: '帮我写一个 Python 脚本来分析测井数据',
-  },
 ];
 
 export default function ChatPage() {
