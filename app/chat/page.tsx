@@ -73,78 +73,78 @@ export default function ChatPage() {
       <div style={{
         width: sidebarOpen ? 260 : 0,
         minWidth: sidebarOpen ? 260 : 0,
-        background: '#111114',
-        borderRight: '1px solid #1e1e22',
+        background: '#0d0d10',
+        borderRight: '1px solid #18181d',
         display: 'flex',
         flexDirection: 'column',
         transition: 'all 0.2s ease',
         overflow: 'hidden',
       }}>
-        {/* Logo + New Chat */}
-        <div style={{ padding: '16px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
-            <div style={{ fontSize: 16, fontWeight: 700, display: 'flex', alignItems: 'center', gap: 8 }}>
-              <span style={{ width: 24, height: 24, background: 'linear-gradient(135deg, #3b82f6, #06b6d4)', borderRadius: 6, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, fontWeight: 700, color: '#fff' }}>O</span>
-              Oil Web
-            </div>
-            <button
-              onClick={() => setSidebarOpen(false)}
-              style={{ background: 'none', border: 'none', color: '#666', cursor: 'pointer', padding: 4, borderRadius: 6 }}
-              onMouseEnter={e => { e.currentTarget.style.background = '#1e1e28'; }}
-              onMouseLeave={e => { e.currentTarget.style.background = 'none'; }}
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-            </button>
+        {/* Logo */}
+        <div style={{ padding: '20px 20px 8px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <div style={{ width: 28, height: 28, borderRadius: 8, background: 'linear-gradient(135deg, #3b82f6, #a855f7, #ec4899)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, fontWeight: 800, color: '#fff' }}>O</div>
+            <span style={{ fontSize: 16, fontWeight: 700, letterSpacing: '-0.02em' }}>Oil Web</span>
           </div>
+        </div>
+
+        {/* New Chat */}
+        <div style={{ padding: '12px 16px' }}>
           <button
             onClick={handleNewChat}
             style={{
               width: '100%', padding: '10px 14px',
-              background: '#1a1a20', border: '1px solid #2a2a32',
-              borderRadius: 10, color: '#c0c0c8', cursor: 'pointer',
+              background: '#141418', border: '1px solid #1e1e24',
+              borderRadius: 12, color: '#a0a0b0', cursor: 'pointer',
               fontSize: 13, textAlign: 'left',
               display: 'flex', alignItems: 'center', gap: 8,
               transition: 'all 0.15s',
             }}
-            onMouseEnter={e => { e.currentTarget.style.background = '#222230'; e.currentTarget.style.borderColor = '#3b82f6'; }}
-            onMouseLeave={e => { e.currentTarget.style.background = '#1a1a20'; e.currentTarget.style.borderColor = '#2a2a32'; }}
+            onMouseEnter={e => { e.currentTarget.style.background = '#1a1a22'; e.currentTarget.style.borderColor = '#3b3b48'; }}
+            onMouseLeave={e => { e.currentTarget.style.background = '#141418'; e.currentTarget.style.borderColor = '#1e1e24'; }}
           >
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
             新对话
           </button>
         </div>
 
         {/* Session list */}
-        <div style={{ flex: 1, overflowY: 'auto', padding: '0 12px' }}>
+        <div style={{ flex: 1, overflowY: 'auto', padding: '4px 12px' }}>
+          {sessions.length > 0 && (
+            <div style={{ fontSize: 11, fontWeight: 600, color: '#555', padding: '8px 8px 4px', letterSpacing: '0.04em' }}>今天</div>
+          )}
           {sessions.map(s => (
             <button
               key={s.id}
               onClick={() => setActiveSession(s.id)}
               style={{
-                width: '100%', padding: '10px 12px',
-                background: activeSession === s.id ? '#1e1e28' : 'transparent',
+                width: '100%', padding: '9px 10px',
+                background: activeSession === s.id ? '#1a1a24' : 'transparent',
                 border: 'none', borderRadius: 8,
-                color: activeSession === s.id ? '#e0e0e0' : '#888',
+                color: activeSession === s.id ? '#d0d0d8' : '#7a7a88',
                 cursor: 'pointer', fontSize: 12, textAlign: 'left',
-                marginBottom: 2,
+                marginBottom: 1,
                 transition: 'all 0.1s',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap',
+                overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+                display: 'flex', alignItems: 'center', gap: 8,
               }}
-              onMouseEnter={e => { e.currentTarget.style.background = '#1e1e28'; }}
-              onMouseLeave={e => { if (activeSession !== s.id) e.currentTarget.style.background = 'transparent'; }}
+              onMouseEnter={e => { e.currentTarget.style.background = '#14141a'; e.currentTarget.style.color = '#b0b0b8'; }}
+              onMouseLeave={e => { if (activeSession !== s.id) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#7a7a88'; }}}
             >
-              {s.firstMessage?.slice(0, 40) || '新对话'}
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" style={{ flexShrink: 0, opacity: 0.5 }}><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              <span style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>{s.firstMessage?.slice(0, 30) || '新对话'}</span>
             </button>
           ))}
+          {sessions.length === 0 && (
+            <div style={{ padding: '20px 10px', textAlign: 'center', color: '#444', fontSize: 12 }}>暂无对话记录</div>
+          )}
         </div>
 
         {/* User section */}
         {user && (
-          <div style={{ padding: '12px 16px', borderTop: '1px solid #1e1e22' }}>
+          <div style={{ padding: '12px 16px', borderTop: '1px solid #18181d' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-              <div style={{ width: 30, height: 30, borderRadius: 8, background: 'linear-gradient(135deg, #3b82f6, #8b5cf6)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, fontWeight: 600, color: '#fff' }}>
+              <div style={{ width: 30, height: 30, borderRadius: 8, background: 'linear-gradient(135deg, #6366f1, #a855f7)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, fontWeight: 600, color: '#fff', flexShrink: 0 }}>
                 {initials}
               </div>
               <div style={{ flex: 1, minWidth: 0 }}>
@@ -157,7 +157,7 @@ export default function ChatPage() {
               </div>
               <button
                 onClick={handleLogout}
-                style={{ background: 'none', border: 'none', color: '#555', cursor: 'pointer', padding: 4 }}
+                style={{ background: 'none', border: 'none', color: '#444', cursor: 'pointer', padding: 4 }}
                 title="退出登录"
               >
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
