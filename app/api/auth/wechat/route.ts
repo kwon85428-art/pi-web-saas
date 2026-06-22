@@ -68,7 +68,7 @@ export async function GET(req: NextRequest) {
       ).run(openid, unionid || null, userData.nickname, userData.headimgurl);
 
       const userId = result.lastInsertRowid as number;
-      db.prepare('INSERT INTO subscriptions (user_id, status, plan) VALUES (?, ?, ?)').run(userId, 'active', 'free');
+      db.prepare('INSERT INTO subscriptions (user_id, status, plan) VALUES (?, ?, ?)').run(userId, 'inactive', 'free');
       user = { id: userId, email: null, nickname: userData.nickname, role: 'user' };
 
       // Create workspace

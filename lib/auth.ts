@@ -70,11 +70,8 @@ export function destroySession(token: string) {
 // Check if user has active subscription
 export function checkSubscription(userId: number): { active: boolean; plan: string } {
   const sub = db.prepare('SELECT status, plan FROM subscriptions WHERE user_id = ?').get(userId) as any;
-  if (!sub) return { active: true, plan: 'free' }; // default: active
-  return {
-    active: sub.status === 'active',
-    plan: sub.plan,
-  };
+  if (!sub) return { active: false, plan: 'free' };
+  return { active: sub.status === 'active', plan: sub.plan || 'free' };
 }
 
 // Get user workspace directory

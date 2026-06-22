@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { existsSync } from "fs";
 import { startRpcSession } from "@/lib/rpc-manager";
 import { withUser } from "@/lib/with-user";
+import { checkSubscription } from "@/lib/auth";
 
 // POST /api/agent/new  body: { cwd: string; type: string; message: string; ... }
 // Spawns a brand-new pi session and immediately sends the first command.
@@ -9,7 +10,13 @@ import { withUser } from "@/lib/with-user";
 export async function POST(req: Request) {
   try {
     // Set user-specific agent data directory
-    await withUser();
+    const ctx = await withUser();
+
+    // Check subscription
+    const sub = checkSubscription(ctx.userId);
+    if (!sub.active && ctx.role !== 'admin') {
+      return NextResponse.json({ error: "请先订阅以使用 AI 对话功能", code: "NO_SUBSCRIPTION" }, { status: 402 });
+    }
 
     const body = await req.json() as { cwd?: string; [key: string]: unknown };
     const { cwd, ...command } = body;

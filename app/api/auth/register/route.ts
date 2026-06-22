@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
     const userId = result.lastInsertRowid as number;
 
     // Create subscription (free tier by default)
-    db.prepare('INSERT INTO subscriptions (user_id, status, plan) VALUES (?, ?, ?)').run(userId, 'active', 'free');
+    db.prepare('INSERT INTO subscriptions (user_id, status, plan) VALUES (?, ?, ?)').run(userId, 'inactive', 'free');
 
     // Create session
     const token = await createToken({ userId, email: email.toLowerCase(), role: 'user' });

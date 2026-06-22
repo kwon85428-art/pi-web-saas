@@ -33,6 +33,7 @@ export default function ChatPage() {
   const [input, setInput] = useState('');
   const [user, setUser] = useState<any>(null);
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const subActive = user?.subscription?.status === 'active';
 
   useEffect(() => {
     fetch('/api/auth/me').then(r => r.json()).then(d => {
@@ -150,7 +151,9 @@ export default function ChatPage() {
                 <div style={{ fontSize: 12, fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                   {user.nickname || user.email}
                 </div>
-                <div style={{ fontSize: 10, color: '#666' }}>免费版</div>
+                <div style={{ fontSize: 10, color: user?.subscription?.status === 'active' ? '#4ade80' : '#f87171' }}>
+                  {user?.subscription?.status === 'active' ? user?.subscription?.plan || 'Pro' : '免费版'}
+                </div>
               </div>
               <button
                 onClick={handleLogout}
@@ -181,6 +184,23 @@ export default function ChatPage() {
       )}
 
       {/* ============ MAIN CONTENT ============ */}
+      {!subActive && user ? (
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '24px', textAlign: 'center' }}>
+          <div style={{ fontSize: 48, marginBottom: 16 }}>🔒</div>
+          <h2 style={{ fontSize: 22, fontWeight: 700, marginBottom: 8, color: '#f1f5f9' }}>升级 Pro 解锁 AI 对话</h2>
+          <p style={{ fontSize: 14, color: '#888', marginBottom: 28, maxWidth: 400, lineHeight: 1.7 }}>
+            你的账号尚未订阅。升级 Pro 后即可使用 DeepSeek V4 驱动的勘探方案生成、专家圆桌辩论等功能。
+          </p>
+          <div style={{ display: 'flex', gap: 12 }}>
+            <button onClick={() => window.location.href = '/chat/full'} style={{ padding: '12px 28px', background: '#3b82f6', border: 'none', borderRadius: 10, color: '#fff', cursor: 'pointer', fontSize: 14, fontWeight: 600 }}>
+              ¥69/月 立即升级
+            </button>
+            <button onClick={() => window.location.href = '/admin'} style={{ padding: '12px 28px', background: '#1a1a24', border: '1px solid #2a2a34', borderRadius: 10, color: '#888', cursor: 'pointer', fontSize: 14 }}>
+              已是 Pro？联系管理员
+            </button>
+          </div>
+        </div>
+      ) : (
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '24px', overflow: 'auto' }}>
         
         {/* Welcome */}
@@ -252,6 +272,7 @@ export default function ChatPage() {
           </div>
         </div>
       </div>
+      )}
     </div>
   );
 }
