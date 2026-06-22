@@ -49,7 +49,7 @@ export async function middleware(req: NextRequest) {
 
   // Auth required
   if (!userId) {
-    if (pathname === '/chat') return NextResponse.redirect(new URL('/login', req.url));
+    if (pathname === '/chat' || pathname.startsWith('/chat/')) return NextResponse.redirect(new URL('/login', req.url));
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
