@@ -8,7 +8,7 @@ interface User {
   created_at: string; sub_status: string; sub_plan: string; sessions?: number;
 }
 
-type Tab = 'users' | 'analytics';
+type Tab = 'users' | 'analytics' | 'payments';
 
 export default function AdminPage() {
   const router = useRouter();
@@ -18,6 +18,8 @@ export default function AdminPage() {
   const [totalUsers, setTotalUsers] = useState(0);
   const [activeSubs, setActiveSubs] = useState(0);
   const [analytics, setAnalytics] = useState<any>(null);
+  const [payments, setPayments] = useState<any[]>([]);
+  const [payStats, setPayStats] = useState<any>({});
 
   const loadUsers = async () => {
     const res = await fetch('/api/admin/users');
@@ -34,7 +36,16 @@ export default function AdminPage() {
     if (res.ok) setAnalytics(await res.json());
   };
 
-  useEffect(() => { loadUsers(); loadAnalytics(); }, []);
+  const loadPayments = async () => {
+    const res = await fetch('/api/admin/payments');
+    if (res.ok) {
+      const d = await res.json();
+      setPayments(d.payments || []);
+      setPayStats(d.stats || {});
+    }
+  };
+
+  useEffect(() => { loadUsers(); loadAnalytics(); loadPayments(); }, []);
 
   const updateUser = async (id: number, u: Record<string, string>) => {
     await fetch(`/api/admin/users/${id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(u) });
@@ -52,6 +63,7 @@ export default function AdminPage() {
             {[
               { key: 'users' as Tab, label: '用户管理' },
               { key: 'analytics' as Tab, label: '数据分析' },
+              { key: 'payments' as Tab, label: '收款管理' },
             ].map(t => (
               <button key={t.key} onClick={() => setTab(t.key)} style={{
                 padding: '6px 16px', borderRadius: 8, border: 'none', cursor: 'pointer', fontSize: 13,
@@ -186,6 +198,79 @@ export default function AdminPage() {
                 })}
               </tbody>
             </table>
+          </div>
+        </div>
+      )}
+
+      {/* Payments tab */}
+      {tab === 'payments' && (
+        <div style={{ padding: '0 24px 40px' }}>
+          {/* Payment stats */}
+          <div style={{ display: 'flex', gap: 16, marginBottom: 16 }}>
+            {[
+              { label: '本月收入', value: `¥${(payStats.thisMonth?.t || 0).toLocaleString()}`, color: '#10b981' },
+              { label: '累计收入', value: `¥${(payStats.total?.t || 0).toLocaleString()}`, color: '#3b82f6' },
+              { label: '已支付', value: `${payStats.paid?.c || 0} 笔`, color: '#f59e0b' },
+              { label: '待处理', value: `${payStats.pending?.c || 0} 笔`, color: '#ef4444' },
+            ].map(s => (
+              <div key={s.label} style={{ flex: 1, background: '#1a1a24', border: '1px solid #2a2a34', borderRadius: 12, padding: '16px 20px' }}>
+                <div style={{ fontSize: 11, color: '#666', marginBottom: 6 }}>{s.label}</div>
+                <div style={{ fontSize: 22, fontWeight: 700, color: s.color }}>{s.value}</div>
+              </div>
+            ))}
+          </div>
+
+          {/* Payments table */}
+          <div style={{ background: '#1a1a24', border: '1px solid #2a2a34', borderRadius: 12, overflow: 'hidden' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
+              <thead>
+                <tr style={{ borderBottom: '1px solid #2a2a34', textAlign: 'left' }}>
+                  <th style={{ padding: '12px 16px', color: '#666', fontWeight: 500, fontSize: 11 }}>ID</th>
+                  <th style={{ padding: '12px 16px', color: '#666', fontWeight: 500, fontSize: 11 }}>用户</th>
+                  <th style={{ padding: '12px 16px', color: '#666', fontWeight: 500, fontSize: 11 }}>金额</th>
+                  <th style={{ padding: '12px 16px', color: '#666', fontWeight: 500, fontSize: 11 }}>方案</th>
+                  <th style={{ padding: '12px 16px', color: '#666', fontWeight: 500, fontSize: 11 }}>方式</th>
+                  <th style={{ padding: '12px 16px', color: '#666', fontWeight: 500, fontSize: 11 }}>状态</th>
+                  <th style={{ padding: '12px 16px', color: '#666', fontWeight: 500, fontSize: 11 }}>时间</th>
+                </tr>
+              </thead>
+              <tbody>
+                {payments.length === 0 ? (
+                  <tr><td colSpan={7} style={{ padding: '40px 16px', textAlign: 'center', color: '#666', fontSize: 13 }}>暂无收款记录。接入 Stripe 后自动同步。</td></tr>
+                ) : payments.map((p: any) => (
+                  <tr key={p.id} style={{ borderBottom: '1px solid #1e1e24' }}>
+                    <td style={{ padding: '10px 16px', color: '#888', fontSize: 11 }}>#{p.id}</td>
+                    <td style={{ padding: '10px 16px' }}>{p.email || `用户#${p.user_id}`}</td>
+                    <td style={{ padding: '10px 16px', fontWeight: 600, color: '#10b981' }}>¥{p.amount?.toFixed(2)}</td>
+                    <td style={{ padding: '10px 16px', color: '#aaa' }}>{p.plan}</td>
+                    <td style={{ padding: '10px 16px', color: '#888' }}>{p.method}</td>
+                    <td style={{ padding: '10px 16px' }}>
+                      <span style={{ padding: '2px 8px', borderRadius: 4, fontSize: 11, background: p.status === 'paid' ? 'rgba(16,185,129,0.12)' : p.status === 'pending' ? 'rgba(245,158,11,0.12)' : 'rgba(239,68,68,0.1)', color: p.status === 'paid' ? '#34d399' : p.status === 'pending' ? '#fbbf24' : '#f87171' }}>
+                        {p.status === 'paid' ? '已支付' : p.status === 'pending' ? '待支付' : p.status}
+                      </span>
+                    </td>
+                    <td style={{ padding: '10px 16px', color: '#666', fontSize: 11 }}>{p.paid_at || p.created_at?.slice(0, 16)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Stripe integration hint */}
+          <div style={{ marginTop: 16, padding: 20, background: '#1a1a24', border: '1px solid #2a2a34', borderRadius: 12 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+              <span style={{ fontSize: 20 }}>💳</span>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 4 }}>接入 Stripe 收款</div>
+                <div style={{ fontSize: 12, color: '#888', lineHeight: 1.6 }}>
+                  创建 <code style={{ background: '#111', padding: '1px 6px', borderRadius: 3 }}>app/api/payment/webhook/route.ts</code> 监听 Stripe Webhook，
+                  支付成功后自动写入 payments 表并激活用户订阅。
+                </div>
+              </div>
+              <button style={{ padding: '8px 16px', background: '#635bff', border: 'none', borderRadius: 8, color: '#fff', cursor: 'pointer', fontSize: 12, fontWeight: 600 }}>
+                配置 Stripe
+              </button>
+            </div>
           </div>
         </div>
       )}

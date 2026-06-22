@@ -59,6 +59,22 @@ function initDb(): Database.Database {
     CREATE INDEX IF NOT EXISTS idx_users_wechat_openid ON users(wechat_openid);
     CREATE INDEX IF NOT EXISTS idx_user_sessions_token ON user_sessions(token);
     CREATE INDEX IF NOT EXISTS idx_subscriptions_user_id ON subscriptions(user_id);
+
+    CREATE TABLE IF NOT EXISTS payments (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_id INTEGER NOT NULL,
+      amount REAL NOT NULL,
+      currency TEXT DEFAULT 'CNY',
+      method TEXT DEFAULT 'stripe',
+      status TEXT DEFAULT 'pending',
+      plan TEXT DEFAULT 'pro',
+      external_id TEXT,
+      paid_at TEXT,
+      created_at TEXT DEFAULT (datetime('now')),
+      FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    );
+    CREATE INDEX IF NOT EXISTS idx_payments_user_id ON payments(user_id);
+    CREATE INDEX IF NOT EXISTS idx_payments_status ON payments(status);
   `);
 
   return _db;
