@@ -124,7 +124,12 @@ export default function AdminPage() {
                     <td style={{ padding: '10px 16px', color: '#666', fontSize: 11 }}>{u.created_at?.slice(0, 10)}</td>
                     <td style={{ padding: '10px 16px', display: 'flex', gap: 6 }}>
                       <button onClick={() => updateUser(u.id, { role: u.role === 'admin' ? 'user' : 'admin' })} style={{ padding: '4px 10px', borderRadius: 6, border: '1px solid #2a2a34', background: 'none', color: '#888', cursor: 'pointer', fontSize: 11 }}>{u.role === 'admin' ? '降级' : '升级'}</button>
-                      <button onClick={() => updateUser(u.id, { subStatus: u.sub_status === 'active' ? 'inactive' : 'active' })} style={{ padding: '4px 10px', borderRadius: 6, border: '1px solid #2a2a34', background: 'none', color: '#888', cursor: 'pointer', fontSize: 11 }}>{u.sub_status === 'active' ? '停用' : '激活'}</button>
+                      <select value={u.sub_plan || 'free'} onChange={e => updateUser(u.id, { subPlan: e.target.value, subStatus: 'active' })} style={{ padding: '4px 8px', borderRadius: 6, border: '1px solid #2a2a34', background: '#0d0d0d', color: '#ccc', cursor: 'pointer', fontSize: 11 }}>
+                        <option value="free">免费</option>
+                        <option value="go">Go ¥69</option>
+                        <option value="plus">Plus ¥139</option>
+                        <option value="pro">Pro ¥199</option>
+                      </select>
                     </td>
                   </tr>
                 ))}

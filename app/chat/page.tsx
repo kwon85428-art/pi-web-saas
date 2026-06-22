@@ -189,16 +189,29 @@ export default function ChatPage() {
           <div style={{ fontSize: 48, marginBottom: 16 }}>🔒</div>
           <h2 style={{ fontSize: 22, fontWeight: 700, marginBottom: 8, color: '#f1f5f9' }}>升级 VIP 解锁 AI 对话</h2>
           <p style={{ fontSize: 14, color: '#888', marginBottom: 28, maxWidth: 400, lineHeight: 1.7 }}>
-            你的账号尚未订阅。升级 VIP 后即可使用 DeepSeek V4 驱动的勘探方案生成、专家圆桌辩论等功能。
+            你的账号尚未订阅。升级后即可使用 DeepSeek V4 驱动的勘探方案生成、专家圆桌辩论等功能。
           </p>
-          <div style={{ display: 'flex', gap: 12 }}>
-            <button onClick={() => window.location.href = '/chat/full'} style={{ padding: '12px 28px', background: '#3b82f6', border: 'none', borderRadius: 10, color: '#fff', cursor: 'pointer', fontSize: 14, fontWeight: 600 }}>
-              ¥69/月 升级 VIP
-            </button>
-            <button onClick={() => window.location.href = '/admin'} style={{ padding: '12px 28px', background: '#1a1a24', border: '1px solid #2a2a34', borderRadius: 10, color: '#888', cursor: 'pointer', fontSize: 14 }}>
-              已是 VIP？联系管理员
-            </button>
+          <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', justifyContent: 'center' }}>
+            {[
+              { plan: 'go', name: 'Go', price: 69, desc: '基础版 · 30次/月', color: '#6b7280' },
+              { plan: 'plus', name: 'Plus', price: 139, desc: '标准版 · 200次/月', color: '#3b82f6' },
+              { plan: 'pro', name: 'Pro', price: 199, desc: '专业版 · 不限次数', color: '#8b5cf6' },
+            ].map(p => (
+              <button key={p.plan} onClick={() => alert(`请管理员在后台开通 ${p.name} 套餐`)} style={{
+                padding: '16px 20px', background: '#1a1a24', border: '1px solid #2a2a34',
+                borderRadius: 14, cursor: 'pointer', textAlign: 'center', minWidth: 140,
+                transition: 'all 0.15s',
+              }}
+              onMouseEnter={e => { e.currentTarget.style.borderColor = p.color; e.currentTarget.style.background = '#222230'; }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor = '#2a2a34'; e.currentTarget.style.background = '#1a1a24'; }}
+              >
+                <div style={{ fontSize: 18, fontWeight: 700, color: p.color, marginBottom: 4 }}>{p.name}</div>
+                <div style={{ fontSize: 20, fontWeight: 800, marginBottom: 4 }}>¥{p.price}<span style={{ fontSize: 12, color: '#666', fontWeight: 400 }}>/月</span></div>
+                <div style={{ fontSize: 11, color: '#888' }}>{p.desc}</div>
+              </button>
+            ))}
           </div>
+          <p style={{ marginTop: 16, fontSize: 12, color: '#555' }}>联系管理员开通，或前往管理后台手动激活</p>
         </div>
       ) : (
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '24px', overflow: 'auto' }}>
