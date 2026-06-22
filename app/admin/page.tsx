@@ -256,20 +256,43 @@ export default function AdminPage() {
             </table>
           </div>
 
-          {/* Stripe integration hint */}
+          {/* Payment config */}
           <div style={{ marginTop: 16, padding: 20, background: '#1a1a24', border: '1px solid #2a2a34', borderRadius: 12 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-              <span style={{ fontSize: 20 }}>💳</span>
-              <div style={{ flex: 1 }}>
-                <div style={{ fontSize: 14, fontWeight: 600, marginBottom: 4 }}>接入 Stripe 收款</div>
-                <div style={{ fontSize: 12, color: '#888', lineHeight: 1.6 }}>
-                  创建 <code style={{ background: '#111', padding: '1px 6px', borderRadius: 3 }}>app/api/payment/webhook/route.ts</code> 监听 Stripe Webhook，
-                  支付成功后自动写入 payments 表并激活用户订阅。
+            <h3 style={{ fontSize: 14, fontWeight: 600, marginBottom: 16, color: '#ccc' }}>💳 收款配置</h3>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+              <div style={{ padding: 16, background: 'rgba(7,193,96,0.06)', border: '1px solid rgba(7,193,96,0.15)', borderRadius: 10 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
+                  <span style={{ fontSize: 18 }}>💚</span>
+                  <span style={{ fontWeight: 600, fontSize: 14 }}>微信支付</span>
+                  <span style={{ marginLeft: 'auto', padding: '2px 8px', borderRadius: 4, fontSize: 10, background: 'rgba(7,193,96,0.15)', color: '#4ade80' }}>Native 扫码</span>
+                </div>
+                <div style={{ fontSize: 12, color: '#888', lineHeight: 1.7 }}>
+                  用户在页面扫码 → 微信确认 → 回调激活订阅<br />
+                  需要：微信商户号 (WECHAT_MCH_ID) + APIv3密钥
+                </div>
+                <div style={{ marginTop: 10, display: 'flex', gap: 8 }}>
+                  <input placeholder="商户号 MCH ID" style={{ flex: 1, padding: '6px 10px', background: '#0d0d0d', border: '1px solid #2a2a34', borderRadius: 6, color: '#ccc', fontSize: 11 }} />
+                  <button style={{ padding: '6px 14px', background: '#07c160', border: 'none', borderRadius: 6, color: '#fff', cursor: 'pointer', fontSize: 11, fontWeight: 600 }}>保存</button>
                 </div>
               </div>
-              <button style={{ padding: '8px 16px', background: '#635bff', border: 'none', borderRadius: 8, color: '#fff', cursor: 'pointer', fontSize: 12, fontWeight: 600 }}>
-                配置 Stripe
-              </button>
+              <div style={{ padding: 16, background: 'rgba(22,119,255,0.06)', border: '1px solid rgba(22,119,255,0.15)', borderRadius: 10 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
+                  <span style={{ fontSize: 18 }}>💙</span>
+                  <span style={{ fontWeight: 600, fontSize: 14 }}>支付宝</span>
+                  <span style={{ marginLeft: 'auto', padding: '2px 8px', borderRadius: 4, fontSize: 10, background: 'rgba(22,119,255,0.15)', color: '#60a5fa' }}>扫码支付</span>
+                </div>
+                <div style={{ fontSize: 12, color: '#888', lineHeight: 1.7 }}>
+                  用户扫码/跳转支付宝 → 支付 → 回调激活订阅<br />
+                  需要：支付宝 AppID + 商户私钥 + 支付宝公钥
+                </div>
+                <div style={{ marginTop: 10, display: 'flex', gap: 8 }}>
+                  <input placeholder="支付宝 App ID" style={{ flex: 1, padding: '6px 10px', background: '#0d0d0d', border: '1px solid #2a2a34', borderRadius: 6, color: '#ccc', fontSize: 11 }} />
+                  <button style={{ padding: '6px 14px', background: '#1677ff', border: 'none', borderRadius: 6, color: '#fff', cursor: 'pointer', fontSize: 11, fontWeight: 600 }}>保存</button>
+                </div>
+              </div>
+            </div>
+            <div style={{ marginTop: 12, fontSize: 11, color: '#555' }}>
+              开发模式下自动走模拟支付。配置真实商户号后自动切换为正式收款。
             </div>
           </div>
         </div>
