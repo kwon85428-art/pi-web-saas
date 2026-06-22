@@ -8,7 +8,7 @@ import path from 'path';
 import { headers } from 'next/headers';
 
 const HOME = process.env.HOME || '/root';
-const USERS_BASE = process.env.PI_WEB_USERS_DIR || path.join(HOME, '.pi-web', 'users');
+const USERS_BASE = process.env.OIL_WEB_USERS_DIR || path.join(HOME, '.oil-web', 'users');
 
 function ensureUserWorkspace(userId: number): string {
   const userDir = path.join(USERS_BASE, String(userId));

@@ -52,7 +52,7 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-[var(--bg)]">
       <div className="w-full max-w-md p-8 bg-[var(--bg-panel)] rounded-xl border border-[var(--border)] shadow-lg">
-        <h1 className="text-2xl font-bold text-center mb-2 text-[var(--text)]">Pi Web</h1>
+        <h1 className="text-2xl font-bold text-center mb-2 text-[var(--text)]">Oil Web</h1>
         <p className="text-center text-[var(--text-muted)] mb-8">登录你的账号</p>
 
         {error && (

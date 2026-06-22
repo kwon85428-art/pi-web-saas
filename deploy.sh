@@ -1,6 +1,6 @@
 #!/bin/bash
 # ============================================================
-# pi-web SaaS — Tencent Cloud deployment script
+# oil-web SaaS — Tencent Cloud deployment script
 # ============================================================
 # Usage:
 #   1. Copy this repo to your Tencent Cloud server (CVM / Lighthouse)
@@ -26,7 +26,7 @@ while [[ $# -gt 0 ]]; do
   shift
 done
 
-echo "=== pi-web SaaS Deployment ==="
+echo "=== oil-web SaaS Deployment ==="
 echo "Project dir: $PROJECT_DIR"
 echo "Production mode: $PRODUCTION"
 [[ -n "$DOMAIN" ]] && echo "Domain: $DOMAIN"
@@ -75,14 +75,14 @@ fi
 # ---- Build Next.js ----
 echo "Building Next.js..."
 source .env 2>/dev/null || true
-export JWT_SECRET="${JWT_SECRET:-pi-web-default}"
+export JWT_SECRET="${JWT_SECRET:-oil-web-default}"
 npm run build
 
 # ---- PM2 ecosystem file ----
 cat > ecosystem.config.cjs << PM2EOF
 module.exports = {
   apps: [{
-    name: 'pi-web',
+    name: 'oil-web',
     script: 'node_modules/.bin/next',
     args: 'start -p 30141',
     cwd: '$PROJECT_DIR',
@@ -103,7 +103,7 @@ $(grep -E '^(JWT_SECRET|WECHAT_APP_ID|WECHAT_APP_SECRET|WECHAT_REDIRECT_URI)=' .
 PM2EOF
 
 # ---- Start/Restart ----
-pm2 delete pi-web 2>/dev/null || true
+pm2 delete oil-web 2>/dev/null || true
 pm2 start ecosystem.config.cjs
 pm2 save
 pm2 startup systemd -u "$(whoami)" --hp "$HOME" 2>/dev/null || true
@@ -114,8 +114,8 @@ echo "App running on: http://localhost:30141"
 echo ""
 echo "Useful commands:"
 echo "  pm2 status          — check status"
-echo "  pm2 logs pi-web     — view logs"
-echo "  pm2 restart pi-web  — restart"
+echo "  pm2 logs oil-web     — view logs"
+echo "  pm2 restart oil-web  — restart"
 
 # ---- Nginx config (production only) ----
 if $PRODUCTION; then
@@ -123,7 +123,7 @@ if $PRODUCTION; then
     DOMAIN=$(curl -s ifconfig.me 2>/dev/null || echo "YOUR_SERVER_IP")
   fi
 
-  sudo tee /etc/nginx/sites-available/pi-web > /dev/null << NGINXEOF
+  sudo tee /etc/nginx/sites-available/oil-web > /dev/null << NGINXEOF
 server {
     listen 80;
     server_name $DOMAIN;
@@ -146,7 +146,7 @@ server {
 }
 NGINXEOF
 
-  sudo ln -sf /etc/nginx/sites-available/pi-web /etc/nginx/sites-enabled/
+  sudo ln -sf /etc/nginx/sites-available/oil-web /etc/nginx/sites-enabled/
   sudo rm -f /etc/nginx/sites-enabled/default
   sudo nginx -t && sudo systemctl reload nginx
 

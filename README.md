@@ -1,4 +1,4 @@
-# pi-web SaaS
+# oil-web SaaS
 
 [pi 编程智能体](https://github.com/badlogic/pi-mono) 的多用户网页界面（SaaS 版）。
 
@@ -23,8 +23,8 @@ npm run dev
 
 ```bash
 # 1. 在腾讯云服务器上克隆
-git clone https://github.com/YOUR_USER/pi-web-saas.git
-cd pi-web-saas
+git clone https://github.com/YOUR_USER/oil-web-saas.git
+cd oil-web-saas
 
 # 2. 一键部署
 bash deploy.sh

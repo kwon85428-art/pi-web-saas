@@ -51,7 +51,7 @@ export default function RegisterPage() {
     <div className="min-h-screen flex items-center justify-center bg-[var(--bg)]">
       <div className="w-full max-w-md p-8 bg-[var(--bg-panel)] rounded-xl border border-[var(--border)] shadow-lg">
         <h1 className="text-2xl font-bold text-center mb-2 text-[var(--text)]">创建账号</h1>
-        <p className="text-center text-[var(--text-muted)] mb-8">注册 Pi Web</p>
+        <p className="text-center text-[var(--text-muted)] mb-8">注册 Oil Web</p>
 
         {error && (
           <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">

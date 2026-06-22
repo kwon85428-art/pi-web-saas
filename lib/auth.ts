@@ -4,10 +4,10 @@ import crypto from 'crypto';
 import db from './db';
 
 const JWT_SECRET = new TextEncoder().encode(
-  process.env.JWT_SECRET || 'pi-web-default-secret-change-in-production-' + Date.now()
+  process.env.JWT_SECRET || 'oil-web-default-secret-change-in-production-' + Date.now()
 );
 
-const COOKIE_NAME = 'pi-web-token';
+const COOKIE_NAME = 'oil-web-token';
 const JWT_EXPIRY = '7d';
 
 export interface UserPayload {
@@ -45,7 +45,7 @@ export async function setAuthCookie(token: string) {
   const cookieStore = await cookies();
   cookieStore.set(COOKIE_NAME, token, {
     httpOnly: true,
-    secure: false,  // Set PI_WEB_HTTPS=true in production with HTTPS
+    secure: false,  // Set OIL_WEB_HTTPS=true in production with HTTPS
     sameSite: 'lax',
     maxAge: 60 * 60 * 24 * 7, // 7 days
     path: '/',
@@ -80,5 +80,5 @@ export function checkSubscription(userId: number): { active: boolean; plan: stri
 // Get user workspace directory
 export function getUserWorkspace(userId: number): string {
   const home = process.env.HOME || '/root';
-  return `${home}/.pi-web/users/${userId}`;
+  return `${home}/.oil-web/users/${userId}`;
 }

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { jwtVerify } from 'jose';
 
 const JWT_SECRET = new TextEncoder().encode(
-  process.env.JWT_SECRET || 'pi-web-default-secret-change-in-production'
+  process.env.JWT_SECRET || 'oil-web-default-secret-change-in-production'
 );
 
 const PUBLIC_PATHS = [
@@ -24,7 +24,7 @@ export async function middleware(req: NextRequest) {
   if (STATIC_EXTS.test(pathname)) return NextResponse.next();
   if (PUBLIC_PATHS.some(p => pathname.startsWith(p))) return NextResponse.next();
 
-  const token = req.cookies.get('pi-web-token')?.value;
+  const token = req.cookies.get('oil-web-token')?.value;
   if (!token) {
     if (pathname === '/') return NextResponse.redirect(new URL('/login', req.url));
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -41,7 +41,7 @@ export async function middleware(req: NextRequest) {
     const res = pathname === '/'
       ? NextResponse.redirect(new URL('/login', req.url))
       : NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    res.cookies.delete('pi-web-token');
+    res.cookies.delete('oil-web-token');
     return res;
   }
 }

@@ -2,7 +2,7 @@ import Database from 'better-sqlite3';
 import path from 'path';
 import fs from 'fs';
 
-const DB_PATH = process.env.PI_WEB_DB_PATH || path.join(process.env.HOME || '/root', '.pi-web', 'pi-web.db');
+const DB_PATH = process.env.OIL_WEB_DB_PATH || path.join(process.env.HOME || '/root', '.oil-web', 'oil-web.db');
 
 let _db: Database.Database | null = null;
 
@@ -15,7 +15,7 @@ function initDb(): Database.Database {
     const dbDir = path.dirname(dbPath);
     if (!fs.existsSync(dbDir)) fs.mkdirSync(dbDir, { recursive: true });
   } catch {
-    dbPath = '/tmp/pi-web-fallback.db';
+    dbPath = '/tmp/oil-web-fallback.db';
     const dbDir = path.dirname(dbPath);
     if (!fs.existsSync(dbDir)) fs.mkdirSync(dbDir, { recursive: true });
   }
