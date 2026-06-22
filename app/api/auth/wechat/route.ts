@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import db from '@/lib/db';
 import { createToken, setAuthCookie, createSession } from '@/lib/auth';
+import { getUserDataDir } from '@/lib/workspace';
 
 /**
  * WeChat OAuth login.
@@ -71,9 +72,7 @@ export async function GET(req: NextRequest) {
       user = { id: userId, email: null, nickname: userData.nickname, role: 'user' };
 
       // Create workspace
-      const fs = require('fs');
-      const home = process.env.HOME || '/root';
-      fs.mkdirSync(`${home}/.pi-web/users/${userId}/sessions`, { recursive: true });
+      getUserDataDir(userId);
     }
 
     const token = await createToken({ userId: user.id, email: user.email, role: user.role });

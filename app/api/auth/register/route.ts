@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 import db from '@/lib/db';
 import { createToken, setAuthCookie, createSession } from '@/lib/auth';
+import { getUserDataDir } from '@/lib/workspace';
 
 export async function POST(req: NextRequest) {
   try {
@@ -42,10 +43,7 @@ export async function POST(req: NextRequest) {
     await setAuthCookie(token);
 
     // Create user workspace
-    const fs = require('fs');
-    const home = process.env.HOME || '/root';
-    const userDir = `${home}/.pi-web/users/${userId}/sessions`;
-    fs.mkdirSync(userDir, { recursive: true });
+    getUserDataDir(userId);
 
     return NextResponse.json({
       user: { id: userId, email: email.toLowerCase(), nickname: nickname || email.split('@')[0], role: 'user' },
