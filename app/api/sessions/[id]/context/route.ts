@@ -1,3 +1,4 @@
+import { withUser } from "@/lib/with-user";
 import { NextResponse } from "next/server";
 import { SessionManager } from "@earendil-works/pi-coding-agent";
 import { resolveSessionPath, buildSessionContext } from "@/lib/session-reader";

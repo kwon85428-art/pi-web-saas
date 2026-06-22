@@ -1,12 +1,16 @@
 import { NextResponse } from "next/server";
 import { existsSync } from "fs";
 import { startRpcSession } from "@/lib/rpc-manager";
+import { withUser } from "@/lib/with-user";
 
 // POST /api/agent/new  body: { cwd: string; type: string; message: string; ... }
 // Spawns a brand-new pi session and immediately sends the first command.
 // Returns { sessionId, data } where sessionId is pi's real session id.
 export async function POST(req: Request) {
   try {
+    // Set user-specific agent data directory
+    await withUser();
+
     const body = await req.json() as { cwd?: string; [key: string]: unknown };
     const { cwd, ...command } = body;
 

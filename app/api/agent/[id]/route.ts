@@ -1,3 +1,4 @@
+import { withUser } from "@/lib/with-user";
 import { NextResponse } from "next/server";
 import { resolveSessionPath } from "@/lib/session-reader";
 import { startRpcSession, getRpcSession } from "@/lib/rpc-manager";
@@ -11,6 +12,7 @@ export async function POST(
   const { id } = await params;
 
   try {
+    await withUser();
     const body = await req.json() as { type: string; [key: string]: unknown };
 
     // Fast path: already-running session
