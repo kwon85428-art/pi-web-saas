@@ -43,9 +43,10 @@ export async function getCurrentUser(): Promise<UserPayload | null> {
 
 export async function setAuthCookie(token: string) {
   const cookieStore = await cookies();
+  const isSecure = process.env.NODE_ENV === 'production' && !process.env.PI_WEB_DEV;
   cookieStore.set(COOKIE_NAME, token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
+    secure: isSecure,
     sameSite: 'lax',
     maxAge: 60 * 60 * 24 * 7, // 7 days
     path: '/',
