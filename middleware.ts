@@ -15,6 +15,7 @@ const PUBLIC_PATHS = [
   '/api/auth/logout',
   '/api/auth/providers',
   '/api/auth/all-providers',
+  '/api/payment/notify',
 ];
 
 const STATIC_EXTS = /\.(svg|png|jpg|jpeg|gif|ico|css|js|woff2?|ttf|eot)$/;

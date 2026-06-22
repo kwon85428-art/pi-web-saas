@@ -14,8 +14,10 @@ interface PaymentConfig {
 }
 
 function getConfig(): PaymentConfig {
-  const row = db.prepare("SELECT value FROM settings WHERE key='payment_config'").get() as any;
-  if (row) return JSON.parse(row.value);
+  try {
+    const row = db.prepare("SELECT value FROM settings WHERE key='payment_config'").get() as any;
+    if (row) return JSON.parse(row.value);
+  } catch {}
   return { wechat_enabled: true, alipay_enabled: true, pro_price: 9.9, pro_price_cny: 69 };
 }
 
@@ -46,7 +48,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({
       orderId,
-      amount: amount / 100,
+      amount: amount,
       method,
       plan: planName,
       qrcode: null,
@@ -62,11 +64,11 @@ export async function POST(req: NextRequest) {
   if (method === 'wechat') {
     // WeChat Native Pay - generate QR code URL
     const wxOrder = await createWechatOrder(orderId, amount, planName);
-    return NextResponse.json({ orderId, amount: amount / 100, method, plan: planName, qrcode: wxOrder.code_url, mockUrl: null });
+    return NextResponse.json({ orderId, amount: amount, method, plan: planName, qrcode: wxOrder.code_url, mockUrl: null });
   } else {
     // Alipay - generate payment URL
     const aliOrder = await createAlipayOrder(orderId, amount, planName);
-    return NextResponse.json({ orderId, amount: amount / 100, method, plan: planName, qrcode: aliOrder.qr_code, mockUrl: null });
+    return NextResponse.json({ orderId, amount: amount, method, plan: planName, qrcode: aliOrder.qr_code, mockUrl: null });
   }
 }
 
