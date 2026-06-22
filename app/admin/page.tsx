@@ -210,7 +210,7 @@ export default function AdminPage() {
             {[
               { label: '本月收入', value: `¥${(payStats.thisMonth?.t || 0).toLocaleString()}`, color: '#10b981' },
               { label: '累计收入', value: `¥${(payStats.total?.t || 0).toLocaleString()}`, color: '#3b82f6' },
-              { label: '已支付', value: `${payStats.paid?.c || 0} 笔`, color: '#f59e0b' },
+              { label: 'VIP', value: `${payStats.paid?.c || 0} 笔`, color: '#f59e0b' },
               { label: '待处理', value: `${payStats.pending?.c || 0} 笔`, color: '#ef4444' },
             ].map(s => (
               <div key={s.label} style={{ flex: 1, background: '#1a1a24', border: '1px solid #2a2a34', borderRadius: 12, padding: '16px 20px' }}>
@@ -246,7 +246,7 @@ export default function AdminPage() {
                     <td style={{ padding: '10px 16px', color: '#888' }}>{p.method}</td>
                     <td style={{ padding: '10px 16px' }}>
                       <span style={{ padding: '2px 8px', borderRadius: 4, fontSize: 11, background: p.status === 'paid' ? 'rgba(16,185,129,0.12)' : p.status === 'pending' ? 'rgba(245,158,11,0.12)' : 'rgba(239,68,68,0.1)', color: p.status === 'paid' ? '#34d399' : p.status === 'pending' ? '#fbbf24' : '#f87171' }}>
-                        {p.status === 'paid' ? '已支付' : p.status === 'pending' ? '待支付' : p.status}
+                        {p.status === 'paid' ? 'VIP' : p.status === 'pending' ? '待支付' : p.status}
                       </span>
                     </td>
                     <td style={{ padding: '10px 16px', color: '#666', fontSize: 11 }}>{p.paid_at || p.created_at?.slice(0, 16)}</td>
