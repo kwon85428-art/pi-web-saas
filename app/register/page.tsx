@@ -38,7 +38,7 @@ export default function RegisterPage() {
         setError(data.error || '注册失败');
         return;
       }
-      router.push('/');
+      router.push('/chat');
       router.refresh();
     } catch {
       setError('网络错误，请重试');

@@ -6,6 +6,7 @@ const JWT_SECRET = new TextEncoder().encode(
 );
 
 const PUBLIC_PATHS = [
+  '/',
   '/login',
   '/register',
   '/api/auth/login',
@@ -22,28 +23,39 @@ export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   if (STATIC_EXTS.test(pathname)) return NextResponse.next();
-  if (PUBLIC_PATHS.some(p => pathname.startsWith(p))) return NextResponse.next();
 
   const token = req.cookies.get('oil-web-token')?.value;
-  if (!token) {
-    if (pathname === '/') return NextResponse.redirect(new URL('/login', req.url));
+  const isAuth = !!token;
+
+  // Verify token if present
+  let userId: number | null = null;
+  if (token) {
+    try {
+      const { payload } = await jwtVerify(token, JWT_SECRET);
+      userId = payload.userId as number;
+    } catch {
+      // Invalid token — clear it below
+    }
+  }
+
+  // Public paths
+  if (PUBLIC_PATHS.some(p => pathname === p || (p !== '/' && pathname.startsWith(p)))) {
+    // If logged in and on landing/login/register, redirect to chat
+    if (userId && (pathname === '/' || pathname === '/login' || pathname === '/register')) {
+      return NextResponse.redirect(new URL('/chat', req.url));
+    }
+    return NextResponse.next();
+  }
+
+  // Auth required
+  if (!userId) {
+    if (pathname === '/chat') return NextResponse.redirect(new URL('/login', req.url));
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  try {
-    const { payload } = await jwtVerify(token, JWT_SECRET);
-    const res = NextResponse.next();
-    res.headers.set('x-pi-user-id', String(payload.userId as number));
-    res.headers.set('x-pi-user-email', (payload.email as string) || '');
-    res.headers.set('x-pi-user-role', (payload.role as string) || 'user');
-    return res;
-  } catch {
-    const res = pathname === '/'
-      ? NextResponse.redirect(new URL('/login', req.url))
-      : NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    res.cookies.delete('oil-web-token');
-    return res;
-  }
+  const res = NextResponse.next();
+  res.headers.set('x-pi-user-id', String(userId));
+  return res;
 }
 
 export const config = {

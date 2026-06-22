@@ -26,7 +26,7 @@ export default function LoginPage() {
         setError(data.error || '登录失败');
         return;
       }
-      router.push('/');
+      router.push('/chat');
       router.refresh();
     } catch {
       setError('网络错误，请重试');
