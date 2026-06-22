@@ -9,22 +9,22 @@ export async function POST(req: NextRequest) {
     const { email, password, nickname } = await req.json();
 
     if (!email || !password) {
-      return NextResponse.json({ error: 'Email and password are required' }, { status: 400 });
+      return NextResponse.json({ error: '邮箱和密码不能为空' }, { status: 400 });
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      return NextResponse.json({ error: 'Invalid email format' }, { status: 400 });
+      return NextResponse.json({ error: '邮箱格式不正确' }, { status: 400 });
     }
 
     // Check if email already exists (before password check for better UX)
     const existing = db.prepare('SELECT id FROM users WHERE email = ?').get(email.toLowerCase());
     if (existing) {
-      return NextResponse.json({ error: 'Email already registered' }, { status: 409 });
+      return NextResponse.json({ error: '该邮箱已注册' }, { status: 409 });
     }
 
     if (password.length < 6) {
-      return NextResponse.json({ error: 'Password must be at least 6 characters' }, { status: 400 });
+      return NextResponse.json({ error: '密码至少 6 个字符' }, { status: 400 });
     }
 
     const passwordHash = await bcrypt.hash(password, 12);
@@ -50,6 +50,6 @@ export async function POST(req: NextRequest) {
     });
   } catch (e: any) {
     console.error('Register error:', e);
-    return NextResponse.json({ error: 'Registration failed' }, { status: 500 });
+    return NextResponse.json({ error: '注册失败' }, { status: 500 });
   }
 }

@@ -42,7 +42,7 @@ export function UserMenu() {
 
   if (!user) return null;
 
-  const initials = (user.nickname || user.email || 'U').slice(0, 2).toUpperCase();
+  const initials = (user.nickname || user.email || '用').slice(0, 2).toUpperCase();
 
   return (
     <div ref={menuRef} style={{ position: 'relative', marginLeft: 'auto' }}>
@@ -87,7 +87,7 @@ export function UserMenu() {
         }}>
           <div style={{ padding: '12px 14px', borderBottom: '1px solid var(--border)' }}>
             <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text)' }}>
-              {user.nickname || 'User'}
+              {user.nickname || '用户'}
             </div>
             <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 2 }}>
               {user.email || 'WeChat user'}
@@ -99,7 +99,7 @@ export function UserMenu() {
               color: user.subscription?.status === 'active' ? '#059669' : '#dc2626',
               fontSize: 10, fontWeight: 500,
             }}>
-              {user.subscription?.plan || 'free'} · {user.subscription?.status === 'active' ? 'Active' : 'Inactive'}
+              {user.subscription?.plan || '免费'} · {user.subscription?.status === 'active' ? '已激活' : '未激活'}
             </div>
           </div>
           <button

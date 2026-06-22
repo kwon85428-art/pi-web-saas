@@ -8,7 +8,7 @@ export async function POST(req: NextRequest) {
     const { email, password } = await req.json();
 
     if (!email || !password) {
-      return NextResponse.json({ error: 'Email and password are required' }, { status: 400 });
+      return NextResponse.json({ error: '邮箱和密码不能为空' }, { status: 400 });
     }
 
     const user = db.prepare(
@@ -16,12 +16,12 @@ export async function POST(req: NextRequest) {
     ).get(email.toLowerCase()) as any;
 
     if (!user) {
-      return NextResponse.json({ error: 'Invalid email or password' }, { status: 401 });
+      return NextResponse.json({ error: '邮箱或密码错误' }, { status: 401 });
     }
 
     const valid = await bcrypt.compare(password, user.password_hash);
     if (!valid) {
-      return NextResponse.json({ error: 'Invalid email or password' }, { status: 401 });
+      return NextResponse.json({ error: '邮箱或密码错误' }, { status: 401 });
     }
 
     const token = await createToken({
@@ -38,6 +38,6 @@ export async function POST(req: NextRequest) {
     });
   } catch (e: any) {
     console.error('Login error:', e);
-    return NextResponse.json({ error: 'Login failed' }, { status: 500 });
+    return NextResponse.json({ error: '登录失败' }, { status: 500 });
   }
 }

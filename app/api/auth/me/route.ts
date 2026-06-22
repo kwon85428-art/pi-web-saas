@@ -23,6 +23,6 @@ export async function GET() {
     });
   } catch (e: any) {
     console.error('Get user error:', e);
-    return NextResponse.json({ error: 'Failed to get user' }, { status: 500 });
+    return NextResponse.json({ error: '获取用户信息失败' }, { status: 500 });
   }
 }

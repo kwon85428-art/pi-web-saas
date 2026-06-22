@@ -19,7 +19,7 @@ export async function GET(req: NextRequest) {
       const appId = process.env.WECHAT_APP_ID;
       if (!appId) {
         return NextResponse.json({
-          error: 'WeChat login not configured',
+          error: '微信登录未配置',
           hint: 'Set WECHAT_APP_ID and WECHAT_APP_SECRET environment variables',
         }, { status: 501 });
       }
@@ -33,7 +33,7 @@ export async function GET(req: NextRequest) {
     const appId = process.env.WECHAT_APP_ID;
     const appSecret = process.env.WECHAT_APP_SECRET;
     if (!appId || !appSecret) {
-      return NextResponse.json({ error: 'WeChat login not configured' }, { status: 501 });
+      return NextResponse.json({ error: '微信登录未配置' }, { status: 501 });
     }
 
     const tokenRes = await fetch(
@@ -43,7 +43,7 @@ export async function GET(req: NextRequest) {
 
     if (tokenData.errcode) {
       console.error('WeChat token error:', tokenData);
-      return NextResponse.json({ error: 'WeChat authentication failed' }, { status: 401 });
+      return NextResponse.json({ error: '微信认证失败' }, { status: 401 });
     }
 
     const { openid, unionid, access_token } = tokenData;
@@ -56,7 +56,7 @@ export async function GET(req: NextRequest) {
 
     if (userData.errcode) {
       console.error('WeChat userinfo error:', userData);
-      return NextResponse.json({ error: 'Failed to get WeChat user info' }, { status: 401 });
+      return NextResponse.json({ error: '获取微信用户信息失败' }, { status: 401 });
     }
 
     // Find or create user
@@ -87,6 +87,6 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ user: { id: user.id, email: user.email, nickname: userData.nickname, role: user.role } });
   } catch (e: any) {
     console.error('WeChat auth error:', e);
-    return NextResponse.json({ error: 'WeChat authentication failed' }, { status: 500 });
+    return NextResponse.json({ error: '微信认证失败' }, { status: 500 });
   }
 }
