@@ -44,7 +44,7 @@ export default function LandingPage() {
           </h1>
           
           <p className="text-lg text-zinc-400 max-w-xl mx-auto leading-relaxed mb-10">
-            AI 圆桌辩论 + 勘探方案生成 + 学者谱系蒸馏——<br />
+            AI 圆桌辩论 + 勘探开发方案生成 + 学者谱系蒸馏——<br />
             把 187 位专家的方法论装进你的工具箱
           </p>
           
@@ -83,7 +83,7 @@ export default function LandingPage() {
           
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
             {[
-              { icon: '🔍', title: '勘探方案生成', desc: '输入区块参数，AI 自动生成从参数井到先导试验的一体化方案，十个模块 G1-G4 门禁' },
+              { icon: '🔍', title: '勘探开发方案生成', desc: '输入区块参数，AI 自动生成从参数井到先导试验的一体化方案，十个模块 G1-G4 门禁' },
               { icon: '🧠', title: '专家圆桌辩论', desc: '6 席位结构化辩论，中外学者智识锚点，交叉质询 + 共识输出 + 验证清单' },
               { icon: '📊', title: '学者谱系蒸馏', desc: '任意学者名单按方法论自动分类，生成谱系报告，看清每一群人在回答什么问题' },
               { icon: '⚡', title: 'AI 编程辅助', desc: '代码、文档、数据分析——DeepSeek V4 驱动，支持实时流式对话与文件操作' },

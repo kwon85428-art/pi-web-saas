@@ -649,7 +649,7 @@ export function AppShell() {
                     从左侧边栏选择一个项目目录开始
                   </div>
                   <div style={{ display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap", maxWidth: 460 }}>
-                    {["勘探方案生成", "专家圆桌辩论", "学者谱系蒸馏", "代码开发助手"].map((hint) => (
+                    {["勘探开发方案生成", "专家圆桌辩论", "学者谱系蒸馏", "代码开发助手"].map((hint) => (
                       <button key={hint} style={{
                         padding: "10px 18px",
                         background: "var(--bg-panel)",

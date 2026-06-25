@@ -14,7 +14,7 @@ interface SessionItem {
 const suggestionCards = [
   {
     icon: '🔍',
-    title: '勘探方案生成',
+    title: '勘探开发方案生成',
     desc: '输入区块参数，AI 生成从参数井到先导试验的一体化方案',
     prompt: '帮我生成一个鄂尔多斯盆地深部煤层气的勘探开发一体化方案',
   },
@@ -189,7 +189,7 @@ export default function ChatPage() {
           <div style={{ fontSize: 48, marginBottom: 16 }}>🔒</div>
           <h2 style={{ fontSize: 22, fontWeight: 700, marginBottom: 8, color: '#f1f5f9' }}>升级 VIP 解锁 AI 对话</h2>
           <p style={{ fontSize: 14, color: '#888', marginBottom: 28, maxWidth: 400, lineHeight: 1.7 }}>
-            你的账号尚未订阅。升级后即可使用 DeepSeek V4 驱动的勘探方案生成、专家圆桌辩论等功能。
+            你的账号尚未订阅。升级后即可使用 DeepSeek V4 驱动的勘探开发方案生成、专家圆桌辩论等功能。
           </p>
           <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', justifyContent: 'center' }}>
             {[
